@@ -1,69 +1,23 @@
-# React + TypeScript + Vite
+# Anemone Holding
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Hello! This is my personal business card website, which I developed to demonstrate my skills. The project is constantly evolving, and I add new useful functions to it.
 
-Currently, two official plugins are available:
+## About project
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+This business card site is not just a portfolio, but also a live project where I experiment with new technologies and ideas. Currently, the site already has a disposable email service.
 
-## Expanding the ESLint configuration
+### **Current capabilities:**
+* **AnemoneMail:** Create temporary email addresses for website registrations and avoid spam.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### **Plans for the future:**
+* **AnemoneBoard:** I plan to add a simple service for organizing tasks.
+* **AnemoneNotes:** It will be possible to create and structure your notes directly on the site.
+* **AnemoneQuizlett** This is a quiz where you can test your knowledge of some things. Video games, movies, literature, art, etc.
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## Technologies used
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+The project was created using modern technologies for fast and efficient development..
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
-
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+* **Framework:** React
+* **Language:** TypeScript
+* **Project Builder:** Vite
