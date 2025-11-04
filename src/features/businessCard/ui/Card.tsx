@@ -1,6 +1,7 @@
 import {useState} from "react";
 import avatar from "../../../shared/icons/avatar_home-page.png"
 import "./index.scss";
+import {useNavigate} from "react-router-dom";
 
 export const Card = () => {
   const [emailCopied, setEmailCopied] = useState(false);
@@ -19,7 +20,7 @@ export const Card = () => {
       el.value = email;
       document.body.appendChild(el);
       el.select();
-      document.execCommand('copy'); // Fallback using deprecated method
+      document.execCommand('copy');
       document.body.removeChild(el);
 
       setEmailCopied(true);
@@ -28,6 +29,8 @@ export const Card = () => {
       }, 2000);
     }
   };
+
+  const navigate = useNavigate();
 
   return (
     <div className={'wrapper'}>
@@ -45,13 +48,14 @@ export const Card = () => {
           7ty2ryz3
         </h1>
         <p className="title">
-          Junior+ Frontend Developer
+          Fullstack Developer
         </p>
         <div className={'about-text-container'}>
           <p className="about-text">
             Увлечен созданием интуитивно понятных и красивых веб-интерфейсов.
             Использую <strong className={'highlight'}>React</strong>, <strong
-            className={'highlight'}>TypeScript</strong> и <strong className={'highlight'}>SCSS</strong> для превращения идей в надежные и адаптивные приложения.
+            className={'highlight'}>TypeScript</strong> и <strong className={'highlight'}>SCSS</strong> для превращения
+            идей в надежные и адаптивные приложения.
             Всегда готов к новым вызовам и стремлюсь к профессиональному росту.
           </p>
         </div>
@@ -131,13 +135,12 @@ export const Card = () => {
           >
             Anemone Mail
           </a>
-          {/*<a*/}
-          {/*  href="https://your-portfolio.com"*/}
-          {/*  target="_blank"*/}
-          {/*  rel="noopener noreferrer"*/}
-          {/*  className={'social-link'}>*/}
-          {/*  Портфолио*/}
-          {/*</a>*/}
+          <button
+            className={'social-link'}
+            onClick={() => navigate("/kanban")}
+          >
+            Anemone Mail
+          </button>
         </div>
         {/* Contact Email */}
         <div className={'contact-section'}>

@@ -1,69 +1,42 @@
-# React + TypeScript + Vite
+# Anemone Holding
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+**Anemone Holding** — это экосистема современных, удобных и безопасных инструментов для повышения вашей продуктивности и защиты конфиденциальности в сети.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Сервисы холдинга.
 
-## Expanding the ESLint configuration
+### 1. Anemone Mail: Сервис одноразовых почтовых адресов
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+**Anemone Mail** предоставляет быстрые и безопасные одноразовые почтовые адреса (temp mail).
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+**Основные преимущества:**
+* **Конфиденциальность:** Защита вашего основного почтового ящика от спама, нежелательных рассылок и фишинга.
+* **Мгновенный доступ:** Быстрое создание адреса без регистрации и паролей, а также, если вам нужно сохранять эти адреса, вы можете зарегистрировать аккаунт, благодаря которому можно будет получить доступ ко всем сервисам холдинга.
+* **Идеально для тестирования:** Удобно для регистрации на новых сервисах, форумах или при скачивании контента.
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+### 2. Anemone Kanban: Трекер задач
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+**Anemone Kanban** — это мощный, но интуитивно понятный инструмент для управления задачами и рабочими процессами, созданный по принципу канбан-досок, аналогично Trello.
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+**Основные возможности:**
+* **Визуализация работы:** Разделяйте проекты на доски, колонки и карточки, чтобы визуально отслеживать прогресс.
+* **Гибкость:** Подходит как для личных дел, так и для командной работы по методологиям Agile/Scrum.
+* **Простота использования:** Минимум отвлекающих элементов и фокусировка на быстром перемещении задач.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+### 3. Anemone Note: Сервис для заметок
 
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+**Anemone Note** — это универсальное рабочее пространство для создания, организации и структурирования ваших идей и информации. Сервис предоставляет все ключевые функции Notion, но фокусируется исключительно на продуктивности, **без использования функций на базе AI**.
+
+**Основные возможности:**
+* **Блочная система:** Создавайте страницы из блоков текста, таблиц, списков.
+
+---
+
+## Начать работу
+
+Зайти на платформу можно через:
+
+`https://7ty2ryz3.ru`
+
+---

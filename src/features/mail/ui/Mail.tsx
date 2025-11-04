@@ -101,9 +101,11 @@ const EmailModal: React.FC<{ email: InboxInterface; onClose: () => void }> = ({e
           <h3 style={{margin: 0, fontSize: '1.25rem'}}>Тема: {email.subject}</h3>
           <p style={{margin: '8px 0 0 0', fontSize: '1rem'}}><strong>Отправитель:</strong> {email.sender}</p>
           <p style={{margin: '4px 0 0 0', fontSize: '0.9rem', color: SECONDARY_COLOR}}>
-            <strong>Получатели:</strong> {email.recipients.join(', ')}</p>
+            <strong>Получатели:</strong> {email.recipients.join(', ')}
+          </p>
           <p style={{margin: '4px 0 0 0', fontSize: '0.9rem', color: SECONDARY_COLOR}}>
-            <strong>Дата:</strong> {new Date(email.received_at).toLocaleString()}</p>
+            <strong>Дата:</strong> {new Date(email.received_at).toLocaleString()}
+          </p>
         </div>
         <div dangerouslySetInnerHTML={{__html: email.body}}/>
       </div>
