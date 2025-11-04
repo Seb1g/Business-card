@@ -1,6 +1,7 @@
-import React, {useState} from "react";
+import {useState} from "react";
 import avatar from "../../../shared/icons/avatar_home-page.png"
 import "./index.scss";
+import {useNavigate} from "react-router-dom";
 
 export const Card = () => {
   const [emailCopied, setEmailCopied] = useState(false);
@@ -19,7 +20,7 @@ export const Card = () => {
       el.value = email;
       document.body.appendChild(el);
       el.select();
-      document.execCommand('copy'); // Fallback using deprecated method
+      document.execCommand('copy');
       document.body.removeChild(el);
 
       setEmailCopied(true);
@@ -29,44 +30,35 @@ export const Card = () => {
     }
   };
 
+  const navigate = useNavigate();
+
   return (
     <div className={'wrapper'}>
-      {/* Parallax Background */}
-      <div className={'parallax-bg'}/>
       <div className={'overlay'}/>
-      {/* Main Content Card */}
       <div className={'card'}>
-        {/* Profile Picture */}
         <div className={'profile-picture-container'}>
           <img
             src={avatar}
             alt="Фото профиля"
             className="profile-picture"
-            onError={(e: React.SyntheticEvent<HTMLImageElement, Event>) => {
-              const target = e.target as HTMLImageElement;
-              target.onerror = null;
-              target.src = "https://placehold.co/120x120/a78bfa/ffffff?text=Ваше+Фото";
-            }}
           />
           <div className={'profile-picture-border'}/>
         </div>
-        {/* Name and Title */}
         <h1 className={'name'}>
           7ty2ryz3
         </h1>
         <p className="title">
-          Junior Frontend Developer
+          Fullstack Developer
         </p>
-        {/* About Section */}
         <div className={'about-text-container'}>
           <p className="about-text">
-            Страстно увлечен созданием интуитивно понятных и красивых веб-интерфейсов.
+            Увлечен созданием интуитивно понятных и красивых веб-интерфейсов.
             Использую <strong className={'highlight'}>React</strong>, <strong
-            className={'highlight'}>TypeScript</strong> и <strong className={'highlight'}>SCSS</strong> для превращения идей в надежный и адаптивный код.
+            className={'highlight'}>TypeScript</strong> и <strong className={'highlight'}>SCSS</strong> для превращения
+            идей в надежные и адаптивные приложения.
             Всегда готов к новым вызовам и стремлюсь к профессиональному росту.
           </p>
         </div>
-        {/* Skills Section */}
         <div className={'skills-container'}>
           <h2 className={'skills-heading'}>
             Ключевые навыки:
@@ -91,9 +83,6 @@ export const Card = () => {
               SCSS
             </span>
             <span className={'skill-tag'}>
-              Tailwind CSS
-            </span>
-            <span className={'skill-tag'}>
               HTML5
             </span>
             <span className={'skill-tag'}>
@@ -107,6 +96,18 @@ export const Card = () => {
             </span>
             <span className={'skill-tag'}>
               Docker
+            </span>
+            <span className={'skill-tag'}>
+              PostgreSQL
+            </span>
+            <span className={'skill-tag'}>
+              GoLang
+            </span>
+            <span className={'skill-tag'}>
+              Linux/Unix
+            </span>
+            <span className={'skill-tag'}>
+              Figma/Photoshop
             </span>
           </div>
         </div>
@@ -134,13 +135,14 @@ export const Card = () => {
           >
             Anemone Mail
           </a>
-          {/*<a*/}
-          {/*  href="https://your-portfolio.com"*/}
-          {/*  target="_blank"*/}
-          {/*  rel="noopener noreferrer"*/}
-          {/*  className={'social-link'}>*/}
-          {/*  Портфолио*/}
-          {/*</a>*/}
+          <a
+            onClick={() => navigate("/kanban")}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={'social-link'}
+          >
+            Anemone Kanban
+          </a>
         </div>
         {/* Contact Email */}
         <div className={'contact-section'}>

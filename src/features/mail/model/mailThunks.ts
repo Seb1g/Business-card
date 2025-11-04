@@ -1,11 +1,4 @@
-import {
-  deleteAllMails, deleteMailId,
-  getDomain,
-  getMailAddresses, mailDataId,
-  type mailDataIdCredentials,
-  mailsList,
-  type mailsListCredentials
-} from '../../../shared/config/mailApi.ts';
+import {getAddressAndEmails, newEmail} from '../../../shared/config/mailApi.ts';
 import {createAsyncThunk} from '@reduxjs/toolkit';
 import axios from 'axios';
 
@@ -16,92 +9,56 @@ const handleApiError = (error: unknown): string => {
   return 'Неизвестная ошибка';
 };
 
-export const getDomainThunk = createAsyncThunk<
-  { domain: string },
-  void,
-  { rejectValue: string }
->('domain/getDomain', async (_, {rejectWithValue}) => {
-  try {
-    const response = await getDomain();
-    return response.data;
-  } catch (error) {
-    return rejectWithValue(handleApiError(error));
-  }
-});
-
-export const getMailAddressesThunk = createAsyncThunk<
-  string[],
-  void,
-  { rejectValue: string }
->('address/getAllAddresses', async ( _,{rejectWithValue}) => {
-  try {
-    const response = await getMailAddresses();
-    return response.data;
-  } catch (error) {
-    return rejectWithValue(handleApiError(error));
-  }
-});
-
-interface mailsListResponse {
-  id: string;
-  sender: string;
-  subject: string;
+interface Response {
+  address: string,
+  token: string
 }
 
-export const mailsListThunk = createAsyncThunk<
-  mailsListResponse[],
-  mailsListCredentials,
+export const createNewMailThunk = createAsyncThunk<
+  Response,
+  void,
   { rejectValue: string }
->('mail/getAllMails', async (credentials, {rejectWithValue}) => {
+>('mail/add_mail', async (_, {rejectWithValue}) => {
   try {
-    const response = await mailsList(credentials);
+    const response = await newEmail()
+    const userData = response.data
+
+    let flag = false;
+    while (!flag) {
+      // eslint-disable-next-line no-constant-condition
+      for (let i = 1; 1 <= 50; i++) {
+        if (localStorage.getItem(`token${i}`) === null) {
+          localStorage.setItem(`token${i}`, JSON.stringify(userData));
+          flag = true;
+          break;
+        }
+      }
+    }
+
+    return userData;
+  } catch (error) {
+    return rejectWithValue(handleApiError(error));
+  }
+})
+
+export const getInboxThunk = createAsyncThunk<
+  {
+    id: number,
+    sender: string,
+    recipients: [
+      string
+    ],
+    subject: string,
+    body: string,
+    received_at: string
+  }[],
+  { token: string },
+  { rejectValue: string }
+>('mail/get_inbox', async (token, {rejectWithValue}) => {
+  try {
+    const response = await getAddressAndEmails(token)
     return response.data;
   } catch (error) {
     return rejectWithValue(handleApiError(error));
   }
-});
-
-interface mailDataResponse {
-  sender: string;
-  subject: string;
-  content: string;
-}
-
-export const getMailDataThunk = createAsyncThunk<
-  mailDataResponse,
-  mailDataIdCredentials,
-  { rejectValue: string }
->('mail/getOneMailData', async (credentials, {rejectWithValue}) => {
-  try {
-    const response = await mailDataId(credentials);
-    return response.data;
-  } catch (error) {
-    return rejectWithValue(handleApiError(error));
-  }
-});
-
-export const deleteOneMailThunk = createAsyncThunk<
-  {status: string},
-  {id: string},
-  { rejectValue: string }
->('mail/deleteOneMail', async (credentials, {rejectWithValue}) => {
-  try {
-    const response = await deleteMailId(credentials.id);
-    return response.data;
-  } catch (error) {
-    return rejectWithValue(handleApiError(error));
-  }
-});
-
-export const deleteAllMailsThunk = createAsyncThunk<
-  {status: string},
-  {address: string},
-  { rejectValue: string }
->('mail/deleteAllMails', async (credentials, {rejectWithValue}) => {
-  try {
-    const response = await deleteAllMails(credentials);
-    return response.data;
-  } catch (error) {
-    return rejectWithValue(handleApiError(error));
-  }
-});
+})

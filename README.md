@@ -1,23 +1,42 @@
 # Anemone Holding
 
-Hello! This is my personal business card website, which I developed to demonstrate my skills. The project is constantly evolving, and I add new useful functions to it.
+**Anemone Holding** — это экосистема современных, удобных и безопасных инструментов для повышения вашей продуктивности и защиты конфиденциальности в сети.
 
-## About project
+---
 
-This business card site is not just a portfolio, but also a live project where I experiment with new technologies and ideas. Currently, the site already has a disposable email service.
+## Сервисы холдинга.
 
-### **Current capabilities:**
-* **AnemoneMail:** Create temporary email addresses for website registrations and avoid spam.
+### 1. Anemone Mail: Сервис одноразовых почтовых адресов
 
-### **Plans for the future:**
-* **AnemoneBoard:** I plan to add a simple service for organizing tasks.
-* **AnemoneNotes:** It will be possible to create and structure your notes directly on the site.
-* **AnemoneQuizlett** This is a quiz where you can test your knowledge of some things. Video games, movies, literature, art, etc.
+**Anemone Mail** предоставляет быстрые и безопасные одноразовые почтовые адреса (temp mail).
 
-## Technologies used
+**Основные преимущества:**
+* **Конфиденциальность:** Защита вашего основного почтового ящика от спама, нежелательных рассылок и фишинга.
+* **Мгновенный доступ:** Быстрое создание адреса без регистрации и паролей, а также, если вам нужно сохранять эти адреса, вы можете зарегистрировать аккаунт, благодаря которому можно будет получить доступ ко всем сервисам холдинга.
+* **Идеально для тестирования:** Удобно для регистрации на новых сервисах, форумах или при скачивании контента.
 
-The project was created using modern technologies for fast and efficient development..
+### 2. Anemone Kanban: Трекер задач
 
-* **Framework:** React
-* **Language:** TypeScript
-* **Project Builder:** Vite
+**Anemone Kanban** — это мощный, но интуитивно понятный инструмент для управления задачами и рабочими процессами, созданный по принципу канбан-досок, аналогично Trello.
+
+**Основные возможности:**
+* **Визуализация работы:** Разделяйте проекты на доски, колонки и карточки, чтобы визуально отслеживать прогресс.
+* **Гибкость:** Подходит как для личных дел, так и для командной работы по методологиям Agile/Scrum.
+* **Простота использования:** Минимум отвлекающих элементов и фокусировка на быстром перемещении задач.
+
+### 3. Anemone Note: Сервис для заметок
+
+**Anemone Note** — это универсальное рабочее пространство для создания, организации и структурирования ваших идей и информации. Сервис предоставляет все ключевые функции Notion, но фокусируется исключительно на продуктивности, **без использования функций на базе AI**.
+
+**Основные возможности:**
+* **Блочная система:** Создавайте страницы из блоков текста, таблиц, списков.
+
+---
+
+## Начать работу
+
+Зайти на платформу можно через:
+
+`https://7ty2ryz3.ru`
+
+---

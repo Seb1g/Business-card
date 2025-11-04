@@ -1,0 +1,79 @@
+.auth-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  justify-content: center;
+  align-items: center;
+  padding: 40px;
+  min-height: 100vh; // Занимает всю высоту
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  width: 300px;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.form-input {
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 16px;
+  transition: border-color 0.3s;
+
+  &:focus {
+    border-color: #0079bf; /* Цвет Trello Blue */
+    outline: none;
+  }
+}
+
+.error-message {
+  color: #bf2600; /* Цвет ошибки */
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.login-button, .register-button {
+  padding: 10px 15px;
+  border: none;
+  border-radius: 4px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.login-button {
+  background-color: #0079bf;
+  color: #fff;
+
+  &:hover:not(:disabled) {
+    background-color: #005e80;
+  }
+
+  &:disabled {
+    background-color: #a5adba;
+    cursor: not-allowed;
+  }
+}
+
+.register-button {
+  background-color: transparent;
+  color: #5e6c84;
+  text-decoration: underline;
+
+  &:hover {
+    color: #172b4d;
+  }
+}

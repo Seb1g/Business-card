@@ -1,12 +1,16 @@
 import {configureStore} from '@reduxjs/toolkit';
 import {useDispatch, useSelector, type TypedUseSelectorHook} from 'react-redux';
 import MailSlice from "../features/mail/model/mailSlice.ts";
-import manageSlice from "../features/mail/model/manageSlice.ts";
+import AuthSlices from "../features/auth/model/authSlices.ts";
+import DashboardSlice from "../features/trello/model/dashboard/slices/dashboardSlice.ts";
+import KanbanSlice from "../features/trello/model/kanban/slices/kanbanSlice.ts";
 
 export const store = configureStore({
   reducer: {
     mail: MailSlice,
-    manage: manageSlice,
+    auth: AuthSlices,
+    trelloDashboard: DashboardSlice,
+    trelloKanban: KanbanSlice
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
