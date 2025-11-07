@@ -259,7 +259,6 @@ $breakpoint-md: 768px;
     line-height: 1.5rem;
   }
 
-  /* Добавим базовый стиль для всех тегов */
   background-color: $color-purple-100;
   color: $color-purple-800;
 }
@@ -284,8 +283,8 @@ $breakpoint-md: 768px;
   box-shadow: $shadow-lg;
   @include transition(all);
   transform: translateY(0);
+  cursor:  pointer;
 
-  /* Исправление: Применяем hover и transform только для устройств с курсором */
   @media (hover: hover) and (pointer: fine) {
     &:hover {
       transform: translateY(-4px);
@@ -293,13 +292,11 @@ $breakpoint-md: 768px;
     }
   }
 
-  /* Добавляем эффект нажатия */
   &:active {
     transform: translateY(0);
     box-shadow: $shadow-md;
   }
 
-  /* Добавим дефолтный стиль для ссылок, чтобы они выглядели одинаково */
   background-color: $color-purple-600;
   color: $color-white;
 
@@ -330,7 +327,6 @@ $breakpoint-md: 768px;
   box-shadow: $shadow-sm;
   @include transition(all);
 
-  /* Исправление: Применяем hover только для устройств с курсором */
   @media (hover: hover) and (pointer: fine) {
     &:hover {
       background-color: $color-purple-200;

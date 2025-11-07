@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import {BrowserRouter as Router, Routes, Route, Navigate} from 'react-router-dom';
+import {BrowserRouter as Router, Routes, Route, Navigate, useLocation} from 'react-router-dom';
 import {HomePage} from "../../pages/HomePage";
 import {MailPage} from "../../pages/MailPage.tsx";
 import {TrelloPage} from "../../pages/TrelloPage.tsx";
@@ -17,8 +17,10 @@ interface AuthGuardProps {
 }
 
 const ProtectedRoute: React.FC<AuthGuardProps> = ({isAuth, unauthorizedRedirectPath = '/login', children}) => {
+  const location = useLocation();
+
   if (!isAuth) {
-    return <Navigate to={unauthorizedRedirectPath} replace/>;
+    return <Navigate to={unauthorizedRedirectPath} state={{ from: location }} replace/>;
   }
   return children ? <>{children}</> : <Outlet/>;
 };
@@ -49,8 +51,8 @@ const AppRoutes: React.FC = () => {
   return (
     <Router>
       <Routes>
-        <Route path="/mail" element={<MailPage/>}/>
         <Route element={<ProtectedRoute isAuth={isAuth} unauthorizedRedirectPath="/login"/>}>
+          <Route path="/mail" element={<MailPage/>}/>
           <Route path="/kanban" element={<TrelloPage/>}/>
           <Route path="/kanban/board" element={<KanbanBoard/>}/>
         </Route>

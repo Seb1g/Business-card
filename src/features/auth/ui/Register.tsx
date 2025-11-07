@@ -1,6 +1,6 @@
 import React from 'react';
 import {useAppDispatch, useAppSelector} from '../../../app/store';
-import {useNavigate} from 'react-router-dom';
+import {useNavigate, useLocation} from 'react-router-dom'; // Импортируем useLocation
 import {registrationThunk} from "../model/authThunks.ts";
 import {Formik, Form, Field, ErrorMessage, type FormikHelpers} from 'formik';
 import * as Yup from 'yup';
@@ -23,11 +23,18 @@ const RegistrationSchema = Yup.object().shape({
 const Register: React.FC = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const location = useLocation(); // Получаем текущее местоположение
 
   const { isLoading, isRegistrationError } = useAppSelector((state) => state.auth);
 
+  // Определяем путь для редиректа.
+  // Если в state есть 'from' (переданный из ProtectedRoute через Login), используем его.
+  // Иначе используем путь по умолчанию: '/kanban'.
+  const fromPath = (location.state as { from?: { pathname: string } })?.from?.pathname || '/kanban';
+
   const handleRedirectToLogin = () => {
-    navigate('/login');
+    // При переходе на логин, передаем то же состояние, чтобы сохранить 'from'
+    navigate('/login', { state: location.state });
   };
 
   const initialValues: RegistrationValues = {
@@ -39,7 +46,15 @@ const Register: React.FC = () => {
     values: RegistrationValues,
     {setSubmitting}: FormikHelpers<RegistrationValues>
   ) => {
-    await dispatch(registrationThunk({email: values.email, password: values.password}));
+    // Дипатчим санку и ждем ее выполнения
+    const result = await dispatch(registrationThunk({email: values.email, password: values.password}));
+
+    // Проверяем, что регистрация была успешна (санка завершилась без ошибки)
+    if (registrationThunk.fulfilled.match(result)) {
+      // **УСПЕШНОЕ ПЕРЕНАПРАВЛЕНИЕ**
+      // После успешной регистрации перенаправляем пользователя на сохраненный путь или на /kanban
+      navigate(fromPath, { replace: true });
+    }
 
     setSubmitting(false);
   };
@@ -89,7 +104,7 @@ const Register: React.FC = () => {
               disabled={isSubmitting || !isValid || !dirty || isLoading}
               className="login-button"
             >
-              {isSubmitting ? 'Регистрация...' : 'Register'}
+              {isSubmitting || isLoading ? 'Регистрация...' : 'Register'}
             </button>
           </Form>
         )}

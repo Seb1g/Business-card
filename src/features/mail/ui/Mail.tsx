@@ -1,33 +1,9 @@
 import React, {useEffect, useState} from 'react';
 import {useAppDispatch, useAppSelector} from '../../../app/store';
 import {mod} from '../lib/mailHelpers';
-import {createNewMailThunk, getInboxThunk} from "../model/mailThunks.ts";
+import {createAddressThunk, getAddressesThunk, getInboxThunk, deleteAddressThunk} from "../model/mailThunks.ts";
 import "./mail.scss";
 import {type InboxInterface, type MailInterface, setSelectedAddress, setSelectedEmail} from "../model/mailSlice.ts";
-
-interface UserData {
-  address: string;
-  token: string;
-}
-
-const loadTokens = (): UserData[] => {
-  const tokens: UserData[] = [];
-  for (let i = 1; i <= 50; i++) {
-    const key = `token${i}`;
-    const userString = localStorage.getItem(key);
-    if (userString !== null) {
-      try {
-        const user = JSON.parse(userString);
-        if (user && user.token) {
-          tokens.push({address: user.address, token: user.token});
-        }
-      } catch (e) {
-        console.error(`Ошибка парсинга JSON для ${key}`, e);
-      }
-    }
-  }
-  return tokens;
-};
 
 const SECONDARY_COLOR = '#6c757d';
 const TERTIARY_COLOR = '#fa5246';
@@ -37,9 +13,7 @@ const PANEL_BACKGROUND = '#ffffff';
 const BORDER_COLOR = '#dee2e6';
 const FONT_FAMILY = 'Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif';
 
-
 const EmailModal: React.FC<{ email: InboxInterface; onClose: () => void }> = ({email, onClose}) => {
-
   const handleBackdropClick = (e: React.MouseEvent<HTMLDivElement>) => {
     if (e.target === e.currentTarget) {
       onClose();
@@ -115,19 +89,21 @@ const EmailModal: React.FC<{ email: InboxInterface; onClose: () => void }> = ({e
 
 export const Mail: React.FC = () => {
   const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(getAddressesThunk());
+  }, [dispatch]);
+
   const {
+    emails,
     inbox,
     inboxLoading,
     inboxError,
     selectedAddress,
     selectedEmail
   } = useAppSelector((state) => state.mail);
-  const [emails, setEmails] = useState<UserData[]>([]);
+  const [addressesModifyState, setAddressesModifyState] = useState<MailInterface[] | null>(emails)
   const [hoveredMailId, setHoveredMailId] = useState<string | null>(null);
-
-  useEffect(() => {
-    setEmails(loadTokens());
-  }, []);
 
   const handleCopyClick = () => {
     if (selectedAddress) {
@@ -135,38 +111,27 @@ export const Mail: React.FC = () => {
     }
   };
 
-  const handleDeleteClick = (): void => {
-    let selectedUserKey: string = ""
-    for (let i = 1; i <= 50; i++) {
-      const userDataString = localStorage.getItem(`token${i}`)
-
-      if (userDataString !== null) {
-        const userData: MailInterface = JSON.parse(userDataString);
-        if (selectedAddress !== null && userData.address === selectedAddress.address) {
-          selectedUserKey = `token${i}`
-          break
-        }
-      } else {
-        console.log("error")
-      }
-    }
-    localStorage.removeItem(selectedUserKey)
-    setEmails(loadTokens());
-    dispatch(setSelectedAddress(emails[1]))
+  const handleDeleteClick = async (address_id: number): Promise<void> => {
+    await dispatch(deleteAddressThunk({address_id}))
+    await dispatch(getAddressesThunk())
+    setAddressesModifyState(emails);
+    if (addressesModifyState) dispatch(setSelectedAddress(addressesModifyState[1]))
   }
 
-  const switchMailHandler = (address: string, token: string) => {
+  const switchMailHandler = async (id: number, address: string, created_at: string) => {
     const dataPush: MailInterface = {
+      id: id,
       address: address,
-      token: token,
+      created_at: created_at
     }
     dispatch(setSelectedAddress(dataPush));
-    dispatch(getInboxThunk({token: dataPush.token}));
+    await dispatch(getInboxThunk({address_id: dataPush.id}));
   }
 
   const createEmailHandler = async () => {
-    await dispatch(createNewMailThunk())
-    setEmails(loadTokens());
+    await dispatch(createAddressThunk())
+    await dispatch(getAddressesThunk())
+    setAddressesModifyState(emails);
   }
 
   const handleEmailClick = (email: InboxInterface) => {
@@ -234,23 +199,23 @@ export const Mail: React.FC = () => {
               fontFamily: FONT_FAMILY,
               fontWeight: 600
             }}
-            value={selectedAddress?.token || 'SELECT_ADDRESS'}
+            value={selectedAddress?.address || 'SELECT_ADDRESS'}
             onChange={async (event) => {
               const selectedValue = event.target.value;
               if (selectedValue === 'CREATE_NEW') {
                 await createEmailHandler();
                 event.target.value = 'SELECT_ADDRESS';
               } else if (selectedValue !== 'SELECT_ADDRESS' && selectedValue !== '') {
-                const selectedEmailData = emails.find(e => e.token === selectedValue);
+                const selectedEmailData = emails && emails.find(e => e.address === selectedValue);
                 if (selectedEmailData) {
-                  switchMailHandler(selectedEmailData.address, selectedValue);
+                  await switchMailHandler(selectedEmailData.id, selectedEmailData.address, selectedEmailData.created_at);
                 }
               }
             }}
           >
             <option value="SELECT_ADDRESS" disabled>Select address</option>
-            {emails.map(e => (
-              <option key={e.token} value={e.token}>
+            {emails && emails.map(e => (
+              <option key={e.id} value={e.address}>
                 {e.address}
               </option>
             ))}
@@ -277,7 +242,9 @@ export const Mail: React.FC = () => {
             Copy
           </button>
           <button
-            onClick={handleDeleteClick}
+            onClick={() => {
+              if (selectedAddress) handleDeleteClick(selectedAddress.id).then(r => console.log(r));
+            }}
             className="mail__btn"
             style={{
               padding: '10px 15px',

@@ -1,6 +1,6 @@
 import React from 'react';
 import {useAppDispatch, useAppSelector} from '../../../app/store';
-import {useNavigate} from 'react-router-dom';
+import {useNavigate, useLocation} from 'react-router-dom'; // Импортируем useLocation
 import {loginThunk} from "../model/authThunks.ts";
 import {Formik, Form, Field, ErrorMessage, type FormikHelpers} from 'formik';
 import * as Yup from 'yup';
@@ -23,9 +23,17 @@ const LoginSchema = Yup.object().shape({
 const Login: React.FC = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const location = useLocation(); // Получаем текущее местоположение
+
+  // Определяем путь для редиректа.
+  // Если в state есть 'from' (переданный из ProtectedRoute), используем его pathname.
+  // Иначе используем путь по умолчанию: '/kanban'.
+  const fromPath = (location.state as { from?: { pathname: string } })?.from?.pathname || '/kanban';
 
   const handleRedirectToRegister = () => {
-    navigate('/register');
+    // Сохраняем текущее состояние при переходе на регистрацию,
+    // чтобы после регистрации можно было вернуться на fromPath
+    navigate('/register', { state: location.state });
   };
 
   const initialValues: LoginValues = {
@@ -37,7 +45,15 @@ const Login: React.FC = () => {
     values: LoginValues,
     {setSubmitting}: FormikHelpers<LoginValues>
   ) => {
-    await dispatch(loginThunk({email: values.email, password: values.password}));
+    // Дипатчим санку и ждем ее выполнения
+    const result = await dispatch(loginThunk({email: values.email, password: values.password}));
+
+    // Проверяем, что вход был успешен (санка завершилась без ошибки)
+    if (loginThunk.fulfilled.match(result)) {
+      // **УСПЕШНОЕ ПЕРЕНАПРАВЛЕНИЕ**
+      // Перенаправляем пользователя на сохраненный путь или на /kanban
+      navigate(fromPath, { replace: true });
+    }
 
     setSubmitting(false);
   };
@@ -80,7 +96,7 @@ const Login: React.FC = () => {
               disabled={isSubmitting || !isValid || !dirty || isLoading}
               className="login-button"
             >
-              {isSubmitting ? 'Вход...' : 'Login'}
+              {isSubmitting || isLoading ? 'Вход...' : 'Login'}
             </button>
             {isLoginError && <div style={{color: 'red'}}>{isLoginError}</div>}
           </Form>

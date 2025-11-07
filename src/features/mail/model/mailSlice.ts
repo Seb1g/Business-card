@@ -1,9 +1,10 @@
 import {createSlice, type PayloadAction} from '@reduxjs/toolkit';
-import {createNewMailThunk, getInboxThunk} from "./mailThunks.ts";
+import {getAddressesThunk, getInboxThunk} from "./mailThunks.ts";
 
 export interface MailInterface {
-  address: string,
-  token: string
+  id: number;
+  address: string;
+  created_at: string;
 }
 
 export interface InboxInterface {
@@ -18,9 +19,9 @@ export interface InboxInterface {
 }
 
 interface MailState {
-  email: { address: string, token: string } | null;
-  emailLoading: boolean;
-  emailError: string | null;
+  emails: MailInterface[] | null;
+  emailsLoading: boolean;
+  emailsError: string | null;
 
   inbox: InboxInterface[] | null;
   inboxLoading: boolean;
@@ -31,9 +32,9 @@ interface MailState {
 }
 
 const initialState: MailState = {
-  email: null,
-  emailLoading: false,
-  emailError: null,
+  emails: null,
+  emailsLoading: false,
+  emailsError: null,
 
   inbox: [],
   inboxLoading: false,
@@ -56,18 +57,21 @@ const mailSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(createNewMailThunk.pending, (state) => {
-      state.emailLoading = true;
-      state.emailError = null;
+    // Get all email addresses
+    builder.addCase(getAddressesThunk.pending, (state) => {
+      state.emailsLoading = true;
+      state.emailsError = null;
     });
-    builder.addCase(createNewMailThunk.fulfilled, (state, action: PayloadAction<MailInterface>) => {
-      state.emailLoading = false;
-      state.email = action.payload;
+    builder.addCase(getAddressesThunk.fulfilled, (state, action: PayloadAction<MailInterface[]>) => {
+      state.emailsLoading = false;
+      state.emails = action.payload;
     });
-    builder.addCase(createNewMailThunk.rejected, (state, action) => {
-      state.emailLoading = false;
-      state.emailError = action.payload || 'Error';
+    builder.addCase(getAddressesThunk.rejected, (state, action) => {
+      state.emailsLoading = false;
+      state.emailsError = action.payload || 'Error';
     });
+
+    // Get inbox
     builder.addCase(getInboxThunk.pending, (state) => {
       state.inboxLoading = true;
       state.inboxError = null;

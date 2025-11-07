@@ -1,4 +1,4 @@
-import {getAddressAndEmails, newEmail} from '../../../shared/config/mailApi.ts';
+import {generateAddress, getAddresses, getInbox, deleteAddress} from '../../../shared/config/mailApi.ts';
 import {createAsyncThunk} from '@reduxjs/toolkit';
 import axios from 'axios';
 
@@ -9,33 +9,27 @@ const handleApiError = (error: unknown): string => {
   return 'Неизвестная ошибка';
 };
 
-interface Response {
-  address: string,
-  token: string
-}
-
-export const createNewMailThunk = createAsyncThunk<
-  Response,
+export const createAddressThunk = createAsyncThunk<
+  { address: string },
   void,
   { rejectValue: string }
->('mail/add_mail', async (_, {rejectWithValue}) => {
+>('mail/create_address', async (_, {rejectWithValue}) => {
   try {
-    const response = await newEmail()
-    const userData = response.data
+    const response = await generateAddress()
+    return response.data;
+  } catch (error) {
+    return rejectWithValue(handleApiError(error));
+  }
+})
 
-    let flag = false;
-    while (!flag) {
-      // eslint-disable-next-line no-constant-condition
-      for (let i = 1; 1 <= 50; i++) {
-        if (localStorage.getItem(`token${i}`) === null) {
-          localStorage.setItem(`token${i}`, JSON.stringify(userData));
-          flag = true;
-          break;
-        }
-      }
-    }
-
-    return userData;
+export const getAddressesThunk = createAsyncThunk<
+  { id: number, address: string, created_at: string }[],
+  void,
+  { rejectValue: string }
+>('mail/get_addresses', async (_, {rejectWithValue}) => {
+  try {
+    const response = await getAddresses()
+    return response.data;
   } catch (error) {
     return rejectWithValue(handleApiError(error));
   }
@@ -52,11 +46,24 @@ export const getInboxThunk = createAsyncThunk<
     body: string,
     received_at: string
   }[],
-  { token: string },
+  { address_id: number },
   { rejectValue: string }
->('mail/get_inbox', async (token, {rejectWithValue}) => {
+>('mail/get_inbox', async (address_id, {rejectWithValue}) => {
   try {
-    const response = await getAddressAndEmails(token)
+    const response = await getInbox(address_id.address_id)
+    return response.data;
+  } catch (error) {
+    return rejectWithValue(handleApiError(error));
+  }
+})
+
+export const deleteAddressThunk = createAsyncThunk<
+  void,
+  { address_id: number },
+  { rejectValue: string }
+>('mail/delete_address', async (address_id, {rejectWithValue}) => {
+  try {
+    const response = await deleteAddress(address_id.address_id);
     return response.data;
   } catch (error) {
     return rejectWithValue(handleApiError(error));

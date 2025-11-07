@@ -128,7 +128,7 @@ export const Card = () => {
             Telegram
           </a>
           <a
-            href="/mail"
+            onClick={() => navigate("/mail")}
             target="_blank"
             rel="noopener noreferrer"
             className={'social-link'}
