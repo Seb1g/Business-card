@@ -22,7 +22,6 @@ const BoardCard: React.FC<BoardCardProps> = ({board}) => {
   const [deleteModal, setDeleteModal] = useState(false);
   const [isDeleteHovered, setIsDeleteHovered] = useState<string | null>(null);
 
-  const {user} = useAppSelector((state) => state.auth);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
@@ -63,11 +62,10 @@ const BoardCard: React.FC<BoardCardProps> = ({board}) => {
                   await dispatch(
                     renameBoardThunk({
                       board_id: board.id,
-                      user_id: user.ID,
                       new_name: renameModalTitle,
                     })
                   );
-                  await dispatch(getAllBoardThunk({user_id: user.ID}));
+                  await dispatch(getAllBoardThunk());
                 };
                 renameBoard().then(r => console.log(r));
                 setRenameModal(false);
@@ -98,11 +96,10 @@ const BoardCard: React.FC<BoardCardProps> = ({board}) => {
                   await dispatch(
                     renameBoardThunk({
                       board_id: board.id,
-                      user_id: user.ID,
                       new_name: renameModalTitle,
                     })
                   );
-                  await dispatch(getAllBoardThunk({user_id: user.ID}));
+                  await dispatch(getAllBoardThunk());
                 };
                 renameBoard().then(r => console.log(r));
                 setRenameModal(false);
@@ -139,10 +136,9 @@ const BoardCard: React.FC<BoardCardProps> = ({board}) => {
                   await dispatch(
                     deleteBoardThunk({
                       board_id: board.id,
-                      user_id: user.ID,
                     })
                   );
-                  await dispatch(getAllBoardThunk({user_id: user.ID}));
+                  await dispatch(getAllBoardThunk());
                 };
                 deleteBoard().then(r => console.log(r));
                 setDeleteModal(false);
@@ -198,14 +194,14 @@ export const Dashboard = () => {
 
   useEffect(() => {
     if (user && user.ID) {
-      dispatch(getAllBoardThunk({user_id: user.ID}));
+      dispatch(getAllBoardThunk());
     }
   }, [dispatch, user]);
 
   const handleCreateBoard = async () => {
     setCreating(false);
     await dispatch(createBoardThunk({title: newBoardTitle, user_id: user.ID}));
-    await dispatch(getAllBoardThunk({user_id: user.ID}));
+    await dispatch(getAllBoardThunk());
   };
 
   return (

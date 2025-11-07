@@ -12,9 +12,9 @@ import type {Columns} from "../slices/kanbanSlice.ts";
 
 export const getOneBoardThunk = createAsyncThunk(
   "trello/get_one_board",
-  async ({board_id, user_id}: {board_id: string, user_id: number}, {rejectWithValue}) => {
+  async ({board_id}: {board_id: string}, {rejectWithValue}) => {
     try {
-      const response = await getOneBoard(board_id, user_id);
+      const response = await getOneBoard(board_id);
       return response.data;
     } catch (e: unknown) {
       if (e instanceof AxiosError) {
@@ -27,9 +27,9 @@ export const getOneBoardThunk = createAsyncThunk(
 
 export const updateBoardThunk = createAsyncThunk(
   "kanban/updateBoard",
-  async ({ board_id, user_id, columns }: {board_id: string, user_id: number, columns: Columns[]}, {rejectWithValue}) => {
+  async ({ board_id, columns }: {board_id: string, user_id: number, columns: Columns[]}, {rejectWithValue}) => {
     try {
-      const response = await updateBoard({board_id: board_id, user_id: user_id, board_data: columns});
+      const response = await updateBoard(board_id, columns);
       return response.data;
     } catch (e: unknown) {
       if (e instanceof AxiosError) {
@@ -44,7 +44,7 @@ export const renameColumnThunk = createAsyncThunk(
   "kanban/updateColumn",
   async ({ board_id, column_id, new_name }: {board_id: string, column_id: string, new_name: string}, {rejectWithValue}) => {
     try {
-      const response = await updateColumn({board_id: board_id, column_id: column_id, new_name: new_name});
+      const response = await updateColumn(board_id, column_id, new_name);
       return response.data;
     } catch (e: unknown) {
       if (e instanceof AxiosError) {
@@ -59,7 +59,7 @@ export const createColumnThunk = createAsyncThunk(
   "kanban/createColumn",
   async ({board_id, column_title}: {board_id: string, column_title: string}, {rejectWithValue}) => {
     try {
-      const response = await createColumn({board_id: board_id, column_title: column_title});
+      const response = await createColumn(board_id, column_title);
       return response.data;
     } catch (e: unknown) {
       if (e instanceof  AxiosError) {
@@ -74,7 +74,7 @@ export const deleteColumnThunk = createAsyncThunk(
   "kanban/deleteColumn",
   async ({board_id, column_id}: {board_id: string, column_id: string}, {rejectWithValue}) => {
     try {
-      const response = await deleteColumn({board_id: board_id, column_id: column_id});
+      const response = await deleteColumn(board_id, column_id);
       return response.data;
     } catch (e: unknown) {
       if (e instanceof  AxiosError) {
@@ -89,7 +89,7 @@ export const createCardThunk = createAsyncThunk(
   "kanban/createCard",
   async ({column_id, card_title}: {column_id: string, card_title: string}, {rejectWithValue}) => {
     try {
-      const response = await createCard({column_id: column_id, card_title: card_title});
+      const response = await createCard(column_id, card_title);
       return response.data;
     } catch (e: unknown) {
       if (e instanceof  AxiosError) {
@@ -104,7 +104,7 @@ export const renameCardThunk = createAsyncThunk(
   "kanban/renameCard",
   async ({column_id, card_id, new_name}: {column_id: string, card_id: string, new_name: string}, {rejectWithValue}) => {
     try {
-      const response = await updateCard({column_id: column_id, card_id: card_id, new_name: new_name});
+      const response = await updateCard(column_id, card_id, new_name);
       return response.data;
     } catch (e: unknown) {
       if (e instanceof  AxiosError) {
@@ -119,7 +119,7 @@ export const deleteCardThunk = createAsyncThunk(
   "kanban/deleteCard",
   async ({column_id, card_id}: {column_id: string, card_id: string}, {rejectWithValue}) => {
     try {
-      const response = await deleteCard({column_id: column_id, card_id: card_id});
+      const response = await deleteCard(column_id, card_id);
       return response.data;
     } catch (e: unknown) {
       if (e instanceof  AxiosError) {

@@ -19,9 +19,9 @@ export const createBoardThunk = createAsyncThunk(
 
 export const getAllBoardThunk = createAsyncThunk(
   "trello/get_all_board",
-  async ({user_id}: {user_id: number}, {rejectWithValue}) => {
+  async (_, {rejectWithValue}) => {
     try {
-      const response = await getAllBoard(user_id);
+      const response = await getAllBoard();
       return response.data;
     } catch (e: unknown) {
       if (e instanceof AxiosError) {
@@ -34,9 +34,9 @@ export const getAllBoardThunk = createAsyncThunk(
 
 export const renameBoardThunk = createAsyncThunk(
   "trello/rename_board",
-  async ({board_id, user_id, new_name}: {board_id: string, user_id: number, new_name: string}, {rejectWithValue}) => {
+  async ({board_id, new_name}: {board_id: string, new_name: string}, {rejectWithValue}) => {
     try {
-      const response = await renameBoard({board_id, user_id, new_name});
+      const response = await renameBoard(board_id, new_name);
       return response.data;
     }
     catch (e: unknown) {
@@ -50,9 +50,9 @@ export const renameBoardThunk = createAsyncThunk(
 
 export const deleteBoardThunk = createAsyncThunk(
   "trello/delete_board",
-  async ({board_id, user_id}: {board_id: string, user_id: number}, {rejectWithValue}) => {
+  async ({board_id}: {board_id: string}, {rejectWithValue}) => {
     try {
-      const response = await deleteBoard({board_id, user_id});
+      const response = await deleteBoard(board_id);
       return response.data;
     }
     catch (e: unknown) {

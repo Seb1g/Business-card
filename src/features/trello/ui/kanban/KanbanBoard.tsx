@@ -90,11 +90,10 @@ interface CardProps {
   card: Cards;
   column_id: string;
   board_id: string;
-  user_id: number;
   index: number;
 }
 
-const Card: React.FC<CardProps> = ({card, column_id, board_id, user_id, index}) => {
+const Card: React.FC<CardProps> = ({card, column_id, board_id, index}) => {
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [newContent, setNewContent] = useState<string>(card.content);
   const dispatch = useAppDispatch();
@@ -102,7 +101,7 @@ const Card: React.FC<CardProps> = ({card, column_id, board_id, user_id, index}) 
   const handleSave = async () => {
     if (newContent.trim() !== card.content.trim()) {
       await dispatch(renameCardThunk({column_id: column_id, card_id: card.id, new_name: newContent.trim()}));
-      await dispatch(getOneBoardThunk({board_id: board_id, user_id: user_id}));
+      await dispatch(getOneBoardThunk({board_id}));
     }
     setIsEditing(false);
   };
@@ -115,7 +114,7 @@ const Card: React.FC<CardProps> = ({card, column_id, board_id, user_id, index}) 
   const handleDeleteClick = async (e: React.MouseEvent) => {
     e.stopPropagation();
     await dispatch(deleteCardThunk({column_id: column_id, card_id: card.id}));
-    await dispatch(getOneBoardThunk({board_id: board_id, user_id: user_id}));
+    await dispatch(getOneBoardThunk({board_id}));
   }
 
   return (
@@ -188,10 +187,9 @@ interface ColumnProps {
   column: Columns;
   index: number;
   board_id: string;
-  user_id: number;
 }
 
-const Column: React.FC<ColumnProps> = ({column, board_id, user_id}) => {
+const Column: React.FC<ColumnProps> = ({column, board_id}) => {
   const [renameTitle, setRenameTitle] = useState<boolean>(false);
   const [newTitleColumn, setNewTitleColumn] = useState<string>(column.title);
   const dispatch = useAppDispatch();
@@ -201,13 +199,13 @@ const Column: React.FC<ColumnProps> = ({column, board_id, user_id}) => {
 
   const handleDeleteColumn = async () => {
     await dispatch(deleteColumnThunk({board_id, column_id: column.id}))
-    await dispatch(getOneBoardThunk({board_id: board_id, user_id: user_id}));
+    await dispatch(getOneBoardThunk({board_id}));
     setIsDeleteModalOpen(false);
   };
 
   const handleCreateCard = async (content: string) => {
     await dispatch(createCardThunk({column_id: column.id, card_title: content}))
-    await dispatch(getOneBoardThunk({board_id: board_id, user_id: user_id}));
+    await dispatch(getOneBoardThunk({board_id}));
     setIsCreateCardModalOpen(false);
   };
 
@@ -218,7 +216,7 @@ const Column: React.FC<ColumnProps> = ({column, board_id, user_id}) => {
         column_id: column.id,
         new_name: newTitleColumn.trim()
       }));
-      await dispatch(getOneBoardThunk({board_id: board_id, user_id: user_id}));
+      await dispatch(getOneBoardThunk({board_id}));
     }
     setRenameTitle(false);
   };
@@ -240,7 +238,7 @@ const Column: React.FC<ColumnProps> = ({column, board_id, user_id}) => {
               className={styles.columnTitleInput}
               onKeyDown={(e) => {
                 if (e.key === 'Enter') {
-                  handleRenameSave();
+                  handleRenameSave().then(r => console.log(r));
                 }
                 if (e.key === 'Escape') {
                   handleRenameCancel();
@@ -300,8 +298,7 @@ const Column: React.FC<ColumnProps> = ({column, board_id, user_id}) => {
               .slice()
               .sort((a, b) => a.position - b.position)
               .map((card, idx) => (
-                <Card key={card.id} card={card} index={idx} board_id={board_id} user_id={user_id}
-                      column_id={column.id}/>
+                <Card key={card.id} card={card} index={idx} board_id={board_id} column_id={column.id}/>
               ))}
             {provided.placeholder}
           </div>
@@ -326,10 +323,9 @@ const Column: React.FC<ColumnProps> = ({column, board_id, user_id}) => {
 
 interface AddColumnProps {
   board_id: string;
-  user_id: number;
 }
 
-const AddColumnButton: React.FC<AddColumnProps> = ({board_id, user_id}: AddColumnProps) => {
+const AddColumnButton: React.FC<AddColumnProps> = ({board_id}: AddColumnProps) => {
   const [isCreated, setIsCreated] = useState<boolean>(false);
   const [newColumnTitle, setNewColumnTitle] = useState<string>('');
   const dispatch = useAppDispatch();
@@ -352,7 +348,7 @@ const AddColumnButton: React.FC<AddColumnProps> = ({board_id, user_id}: AddColum
               if (e.key === 'Enter') {
                 const createColumn = async () => {
                   await dispatch(createColumnThunk({board_id: board_id, column_title: newColumnTitle}))
-                  await dispatch(getOneBoardThunk({board_id: board_id, user_id: user_id}))
+                  await dispatch(getOneBoardThunk({board_id}))
                 }
                 createColumn().then(r => console.log(r))
                 setIsCreated(false);
@@ -385,7 +381,7 @@ export const KanbanBoard: React.FC = () => {
 
   useEffect(() => {
     if (boardId) {
-      dispatch(getOneBoardThunk({board_id: boardId, user_id: user.ID}));
+      dispatch(getOneBoardThunk({board_id: boardId}));
     }
   }, [dispatch, boardId, user]);
 
@@ -479,8 +475,7 @@ export const KanbanBoard: React.FC = () => {
                         {...providedDr.dragHandleProps}
                         style={providedDr.draggableProps.style}
                       >
-                        <Column column={column} index={index} board_id={board.id}
-                                user_id={user.ID}/>
+                        <Column column={column} index={index} board_id={board.id}/>
                       </div>
                     )}
                   </Draggable>
@@ -488,7 +483,7 @@ export const KanbanBoard: React.FC = () => {
 
               {provided.placeholder}
 
-              <AddColumnButton board_id={board.id} user_id={user.ID}/>
+              <AddColumnButton board_id={board.id}/>
 
             </div>
           )}

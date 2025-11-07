@@ -1,5 +1,4 @@
 import apiClient from '../api/createApi';
-import type {AxiosRequestConfig} from "axios";
 
 export interface createBoardProps {
   title: string,
@@ -11,35 +10,20 @@ export const createBoard = (board: createBoardProps) => {
   return apiClient.post('/api/v1/trello/create_board', board);
 }
 
-export const getOneBoard = (board_id: string, user_id: number) => {
-  return apiClient.get(`/api/v1/trello/get_one_user_board?boardId=${board_id}&userId=${user_id}`);
+export const getOneBoard = (board_id: string) => {
+  return apiClient.get(`/api/v1/trello/board/${board_id}`);
 }
 
-export const getAllBoard = (user_id: number) => {
-  return apiClient.get(`/api/v1/trello/get_all_user_boards?userId=${user_id}`);
+export const getAllBoard = () => {
+  return apiClient.get(`/api/v1/trello/get_all_user_boards`);
 }
 
-export interface deleteBoardProps {
-  board_id: string,
-  user_id: number
-}
-
-export const deleteBoard = (deleteBoardProps: deleteBoardProps) => {
-  const config: AxiosRequestConfig = {
-    data: deleteBoardProps
-  };
-
-  return apiClient.delete('/api/v1/trello/delete_board', config);
+export const deleteBoard = (board_id: string) => {
+  return apiClient.delete(`/api/v1/trello/board/${board_id}`);
 };
 
-export interface updateBoardProps {
-  board_id: string,
-  user_id: number,
-  new_name: string,
-}
-
-export const renameBoard = (board: updateBoardProps) => {
-  return apiClient.put('/api/v1/trello/rename_board', board);
+export const renameBoard = (board_id: string, new_name: string) => {
+  return apiClient.put(`/api/v1/trello/board/${board_id}`, {new_name: new_name});
 }
 
 export interface Cards {
@@ -56,76 +40,30 @@ export interface Columns {
   cards: Cards[] | null;
 }
 
-interface updateFullProps {
-  board_id: string,
-  user_id: number,
-  board_data: Columns[],
-}
-
-export const updateBoard = (board: updateFullProps) => {
-  return apiClient.post('/api/v1/trello/update_board',  board);
+export const updateBoard = (board_id: string, columns: Columns[]) => {
+  return apiClient.post(`/api/v1/trello/board/${board_id}`,  {board_data: columns});
 }
 // Column
-export interface createColumnProps {
-  board_id: string;
-  column_title: string;
+export const createColumn = (board_id: string, column_title: string) => {
+  return apiClient.post(`/api/v1/trello/board/${board_id}/column`, {column_title: column_title});
 }
 
-export const createColumn = (column: createColumnProps) => {
-  return apiClient.post(`/api/v1/trello/create_column`, column);
+export const deleteColumn = (board_id: string, column_id: string) => {
+  return apiClient.delete(`/api/v1/trello/board/${board_id}/column/${column_id}`);
 }
 
-export interface deleteColumnProps {
-  board_id: string;
-  column_id: string;
-}
-
-export const deleteColumn = (column: deleteColumnProps) => {
-  const config: AxiosRequestConfig = {
-    data: column
-  };
-
-  return apiClient.delete('/api/v1/trello/delete_column', config)
-}
-
-export interface updateColumnProps {
-  board_id: string,
-  column_id: string,
-  new_name: string,
-}
-
-export const updateColumn = (column: updateColumnProps) => {
-  return apiClient.put(`/api/v1/trello/rename_column`, column);
+export const updateColumn = (board_id: string, column_id: string, new_name: string) => {
+  return apiClient.put(`/api/v1/trello/board/${board_id}/column/${column_id}`, {new_name: new_name});
 }
 // Card
-export interface createCardProps {
-  column_id: string;
-  card_title: string;
+export const createCard = (column_id: string, card_title: string) => {
+  return apiClient.post(`/api/v1/trello/column/${column_id}/card`, {card_title: card_title});
 }
 
-export const createCard = (card: createCardProps) => {
-  return apiClient.post(`/api/v1/trello/create_card`, card);
+export const updateCard = (column_id: string, card_id: string, new_name: string) => {
+  return apiClient.put(`/api/v1/trello/column/${column_id}/card/${card_id}`, {new_name:  new_name});
 }
 
-export interface updateCardProps {
-  column_id: string;
-  card_id: string;
-  new_name: string;
-}
-
-export const updateCard = (card: updateCardProps) => {
-  return apiClient.put(`/api/v1/trello/rename_card`, card);
-}
-
-export interface deleteCardProps {
-  column_id: string;
-  card_id: string;
-}
-
-export const deleteCard = (card: deleteCardProps) => {
-  const config: AxiosRequestConfig = {
-    data: card
-  };
-
-  return apiClient.delete(`/api/v1/trello/delete_card`, config);
+export const deleteCard = (column_id: string, card_id: string,) => {
+  return apiClient.delete(`/api/v1/trello/column/${column_id}/card/${card_id}`);
 }
