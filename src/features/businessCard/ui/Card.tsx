@@ -143,6 +143,14 @@ export const Card = () => {
           >
             Anemone Kanban
           </a>
+          <a
+            onClick={() => navigate("/quiz")}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={'social-link'}
+          >
+            Anemone Quiz
+          </a>
         </div>
         {/* Contact Email */}
         <div className={'contact-section'}>

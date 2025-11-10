@@ -9,6 +9,8 @@ import {useAppDispatch, useAppSelector} from "../store.ts";
 import {checkAuth} from "../../features/auth/model/authThunks.ts";
 import {Outlet} from 'react-router-dom';
 import {KanbanBoard} from "../../features/trello/ui/kanban/KanbanBoard.tsx";
+import {QuizPage} from "../../pages/QuizPage.tsx";
+import {Quizlet} from "../../features/quiz/ui/quizlet/Quizlet.tsx";
 
 interface AuthGuardProps {
   isAuth: boolean;
@@ -20,7 +22,7 @@ const ProtectedRoute: React.FC<AuthGuardProps> = ({isAuth, unauthorizedRedirectP
   const location = useLocation();
 
   if (!isAuth) {
-    return <Navigate to={unauthorizedRedirectPath} state={{ from: location }} replace/>;
+    return <Navigate to={unauthorizedRedirectPath} state={{from: location}} replace/>;
   }
   return children ? <>{children}</> : <Outlet/>;
 };
@@ -61,6 +63,8 @@ const AppRoutes: React.FC = () => {
           <Route path="/register" element={<Register/>}/>
         </Route>
         <Route path="*" element={<HomePage/>}/>
+        <Route path="/quiz" element={<QuizPage/>}/>
+        <Route path='/quiz/let' element={<Quizlet/>}/>
       </Routes>
     </Router>
   );

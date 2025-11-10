@@ -25,14 +25,9 @@ const Login: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation(); // Получаем текущее местоположение
 
-  // Определяем путь для редиректа.
-  // Если в state есть 'from' (переданный из ProtectedRoute), используем его pathname.
-  // Иначе используем путь по умолчанию: '/kanban'.
   const fromPath = (location.state as { from?: { pathname: string } })?.from?.pathname || '/kanban';
 
   const handleRedirectToRegister = () => {
-    // Сохраняем текущее состояние при переходе на регистрацию,
-    // чтобы после регистрации можно было вернуться на fromPath
     navigate('/register', { state: location.state });
   };
 
@@ -45,13 +40,9 @@ const Login: React.FC = () => {
     values: LoginValues,
     {setSubmitting}: FormikHelpers<LoginValues>
   ) => {
-    // Дипатчим санку и ждем ее выполнения
     const result = await dispatch(loginThunk({email: values.email, password: values.password}));
 
-    // Проверяем, что вход был успешен (санка завершилась без ошибки)
     if (loginThunk.fulfilled.match(result)) {
-      // **УСПЕШНОЕ ПЕРЕНАПРАВЛЕНИЕ**
-      // Перенаправляем пользователя на сохраненный путь или на /kanban
       navigate(fromPath, { replace: true });
     }
 
