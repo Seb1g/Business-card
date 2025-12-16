@@ -1,20 +1,9 @@
 import axios from 'axios';
-
-export interface AuthResponse {
-  access_token: string;
-  refresh_token: string;
-  user_data: IUser;
-}
-
-export interface IUser {
-  ID: number,
-  Email: string,
-  Password: string,
-  CreatedAt: string
-}
+import {refresh} from "../config/authApi.ts";
 
 const apiClient = axios.create({
-  baseURL: 'http://localhost:8888',
+  // baseURL: "https://api.7ty2ryz3.ru", // PROD
+  baseURL: "http://localhost:8888", // DEV
   withCredentials: true,
 });
 
@@ -42,11 +31,7 @@ apiClient.interceptors.response.use((config) => {
           return Promise.reject(error);
         }
 
-        const response = await axios.post<AuthResponse>(
-          `http://localhost:8888/api/v1/auth/refresh`,
-          {refresh_token: refreshToken},
-          {withCredentials: true}
-        )
+        const response = await refresh(refreshToken);
 
         localStorage.setItem('access_token', response.data.access_token);
 

@@ -1,0 +1,32 @@
+@use "../../../../styles/variables" as var;
+@use "../../../../styles/utilities";
+
+.deleteModalOverlay {
+  @extend .modalOverlay;
+}
+
+.deleteModalContent {
+  @extend .modalContent;
+}
+
+.deleteModalHeader {
+  @extend .modalHeader;
+}
+
+.deleteModalControls {
+  @extend .modalControls;
+}
+
+.deleteColumnButtonSecondary {
+  @extend .buttonSecondary;
+}
+
+.buttonDanger {
+  @extend .buttonPrimary;
+  background-color: var.$danger;
+  margin-left: 10px;
+
+  &:hover {
+    background-color: var.$dangerHover;
+  }
+}

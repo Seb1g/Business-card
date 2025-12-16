@@ -1,0 +1,24 @@
+@use "../../../../styles/utilities";
+@use "../../../../styles/variables" as var;
+
+.createModalOverlay {
+  @extend .modalOverlay;
+}
+
+.createModalContent {
+  @extend .modalContent;
+}
+
+.createModalHeader {
+  @extend .modalHeader;
+}
+
+.createModalInput {
+  @extend .inputBase;
+  resize: vertical;
+  min-height: 80px;
+}
+
+.createModalControls {
+  @extend .modalControls;
+}

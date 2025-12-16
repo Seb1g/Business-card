@@ -1,7 +1,7 @@
 import {createAsyncThunk} from "@reduxjs/toolkit";
-import axios, {AxiosError} from "axios";
-import {login, logout, register} from "../../../shared/config/authApi.ts";
-import type {AuthResponse, IUser} from "../../../shared/api/createApi.ts";
+import {AxiosError} from "axios";
+import {login, logout, refresh, register} from "../../../shared/config/authApi.ts";
+import type {AuthResponse, IUser} from "../../../shared/config/authApi.ts";
 
 const setTokensInStorage = (data: AuthResponse) => {
   localStorage.setItem("access_token", data.access_token);
@@ -67,11 +67,7 @@ export const checkAuth = createAsyncThunk("auth/checkAuth", async (_, {rejectWit
       return rejectWithValue("No refresh token found");
     }
 
-    const response = await axios.post<AuthResponse>(
-      `http://localhost:8888/api/v1/auth/refresh`,
-      { refresh_token: refreshToken },
-      { withCredentials: true }
-    );
+    const response = await refresh(refreshToken)
 
     localStorage.setItem("access_token", response.data.access_token);
 

@@ -1,0 +1,107 @@
+@use "../../../../styles/variables" as var;
+
+.boardCard {
+  background-color: var.$card;
+  border-radius: 8px;
+  padding: 20px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border-left: 4px solid var.$trelloBlue;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  min-height: 140px;
+  box-shadow:
+    0 1px 3px rgba(9, 30, 66, 0.25),
+    0 0 1px rgba(9, 30, 66, 0.31);
+
+  &:hover {
+    box-shadow:
+      0 4px 12px rgba(9, 30, 66, 0.2),
+      0 0 1px rgba(9, 30, 66, 0.5);
+    transform: translateY(-2px);
+  }
+}
+
+.boardTitle {
+  font-size: 20px;
+  font-weight: 700;
+  color: var.$textPrimary;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex-grow: 1;
+  margin-right: 15px;
+}
+
+.buttonContainer {
+  display: flex;
+  flex-direction: column;
+  margin-left: 15px;
+  min-width: 50px;
+
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease-out;
+}
+
+.boardCard:hover .buttonContainer {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+@media (hover: none) {
+  .buttonContainer {
+    opacity: 1;
+    pointer-events: auto;
+  }
+}
+
+.iconButton {
+  padding: 4px 8px;
+  margin: 2px 0;
+  background-color: transparent;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  color: var.$textSecondary;
+  transition:
+    background-color 0.15s ease,
+    color 0.15s ease;
+}
+
+.rename:hover {
+  background-color: var.$trelloBlue;
+  color: var.$card;
+}
+
+.delete:hover {
+  background-color: var.$danger;
+  color: var.$card;
+}
+
+.renameSection,
+.deleteSection {
+  width: 100%;
+}
+
+.input {
+  width: 100%;
+  height: 22px;
+  padding: 10px;
+  margin: 8px 0;
+  border-radius: 4px;
+  border: 1px solid var.$modalCancel;
+  font-size: 16px;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

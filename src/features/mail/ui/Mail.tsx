@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {useAppDispatch, useAppSelector} from '../../../app/store';
 import {mod} from '../lib/mailHelpers';
 import {createAddressThunk, getAddressesThunk, getInboxThunk, deleteAddressThunk} from "../model/mailThunks.ts";
-import "./mail.scss";
+import "./Mail.scss";
 import {type InboxInterface, type MailInterface, setSelectedAddress, setSelectedEmail} from "../model/mailSlice.ts";
 
 const SECONDARY_COLOR = '#6c757d';

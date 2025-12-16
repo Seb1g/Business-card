@@ -1,0 +1,66 @@
+@use "../../../styles/variables" as var;
+@use "../../../styles/utilities";
+
+.btn {
+  padding: 10px 15px;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: background-color 0.2s;
+}
+
+.primary {
+  background-color: var.$danger;
+  color: var.$card;
+
+  &:hover {
+    background-color: darken(var.$danger, 10%);
+  }
+}
+
+.secondary {
+  background-color: transparent;
+  color: var.$modalCancel;
+  border: 1px solid var.$modalCancel;
+
+  &:hover {
+    background-color: #ebecf0;
+  }
+}
+
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  background-color: var.$overlay;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal {
+  background-color: var.$modalBg;
+  padding: 25px;
+  border-radius: 8px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+  width: 350px;
+}
+
+.modalTitle {
+  font-size: 20px;
+  font-weight: 700;
+  color: var.$textPrimary;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex-grow: 1;
+  margin-right: 15px;
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}

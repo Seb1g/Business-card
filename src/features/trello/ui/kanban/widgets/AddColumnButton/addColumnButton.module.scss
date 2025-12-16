@@ -1,0 +1,51 @@
+@use "../../../../styles/utilities";
+@use "../../../../styles/variables" as var;
+
+.addColumnButton {
+  flex: 0 0 auto;
+  width: 300px;
+  margin-right: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var.$card;
+  font-weight: 600;
+  background-color: var.$card;
+  border-radius: 8px;
+  padding: 20px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border-left: 4px solid var.$trelloBlue;
+  min-height: 140px;
+  box-shadow: 0 1px 3px rgba(9, 30, 66, 0.25), 0 0 1px rgba(9, 30, 66, 0.31);
+
+  &:hover {
+    box-shadow: 0 4px 12px rgba(9, 30, 66, 0.2), 0 0 1px rgba(9, 30, 66, 0.5);
+    transform: translateY(2px);
+  }
+}
+
+.addColumnCreateBox {
+  width: 100%;
+}
+
+.addColumnTitlePrompt {
+  font-size: 20px;
+  font-weight: 600;
+  color: var.$textPrimary;
+  margin-bottom: 15px;
+}
+
+.addColumnInput {
+  @extend .inputBase;
+  margin-bottom: 0;
+}
+
+.addColumnTitle {
+  font-size: 20px;
+  font-weight: 700;
+  color: var.$textPrimary;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

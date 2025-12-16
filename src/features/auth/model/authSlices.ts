@@ -1,5 +1,5 @@
 import {createSlice} from "@reduxjs/toolkit";
-import type {IUser} from "../../../shared/api/createApi.ts";
+import type {IUser} from "../../../shared/config/authApi.ts";
 import {checkAuth, loginThunk, logoutThunk, registrationThunk} from "./authThunks.ts";
 
 const initialState = {
