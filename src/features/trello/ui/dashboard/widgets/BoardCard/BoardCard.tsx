@@ -161,7 +161,7 @@ export const BoardCard: React.FC<BoardCardProps> = ({ board }) => {
                 width="15px"
                 height="15px"
                 viewBox="0 0 108.294 122.88"
-                enable-background="new 0 0 108.294 122.88"
+                enableBackground="new 0 0 108.294 122.88"
                 xmlSpace="preserve"
               >
                 <g>

@@ -2,8 +2,7 @@ import axios from 'axios';
 import {refresh} from "../config/authApi.ts";
 
 const apiClient = axios.create({
-  // baseURL: "https://api.7ty2ryz3.ru", // PROD
-  baseURL: "http://localhost:8888", // DEV
+  baseURL: "http://localhost",
   withCredentials: true,
 });
 
@@ -34,6 +33,7 @@ apiClient.interceptors.response.use((config) => {
         const response = await refresh(refreshToken);
 
         localStorage.setItem('access_token', response.data.access_token);
+        localStorage.setItem('refresh_token', response.data.refresh_token);
 
         originalRequest.headers.Authorization = `Bearer ${response.data.access_token}`;
 

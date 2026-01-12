@@ -70,6 +70,7 @@ export const checkAuth = createAsyncThunk("auth/checkAuth", async (_, {rejectWit
     const response = await refresh(refreshToken)
 
     localStorage.setItem("access_token", response.data.access_token);
+    localStorage.setItem('refresh_token', response.data.refresh_token);
 
     return response.data;
   } catch (e: unknown) {

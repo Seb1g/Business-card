@@ -9,7 +9,6 @@ interface auth {
 export interface IUser {
   ID: number,
   Email: string,
-  Password: string,
   CreatedAt: string
 }
 
@@ -28,14 +27,13 @@ export const register = (auth: auth) => {
 }
 
 export const logout = () => {
-  return apiClient.post('/api/v1/auth/login');
+  return apiClient.post('/api/v1/auth/logout');
 }
 
 export const refresh = async (refresh: string): Promise<AxiosResponse<AuthResponse>> => {
   return await apiClient.post(`/api/v1/auth/refresh`, {refresh_token: refresh})
 }
 
-// TODO:
 export const changePassword = () => {
-  return apiClient.post('/api/v1/auth/login');
+  return apiClient.post('/api/v1/auth/change-password');
 }

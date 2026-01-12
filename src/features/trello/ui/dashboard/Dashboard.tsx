@@ -8,8 +8,9 @@ import {
 import { BoardCard } from "./widgets/BoardCard/BoardCard";
 
 import styles from "./styles/dashboard.module.scss";
-import boardCardStyles from "./widgets/BoardCard/boardCard.module.scss";
 import ui from "./styles/ui.module.scss";
+import boardCardStyles from "./widgets/BoardCard/boardCard.module.scss";
+import { NavBar } from "./widgets/NavBar/NavBar";
 
 export const Dashboard = () => {
   const dispatch = useAppDispatch();
@@ -20,10 +21,8 @@ export const Dashboard = () => {
   const [newBoardTitle, setNewBoardTitle] = useState("");
 
   useEffect(() => {
-    if (user?.ID) {
-      dispatch(getAllBoardThunk());
-    }
-  }, [dispatch, user]);
+    dispatch(getAllBoardThunk());
+  }, [dispatch]);
 
   const handleCreateBoard = async () => {
     setCreating(false);
@@ -35,10 +34,11 @@ export const Dashboard = () => {
 
   return (
     <div className={styles.dashboardContainer}>
+      <NavBar />
       <h1 className={styles.title}>Your Boards:</h1>
 
       <div className={styles.boardsGrid}>
-        {boards.map((board) => (
+        {boards && boards.map((board) => (
           <BoardCard key={board.id} board={board} />
         ))}
 
